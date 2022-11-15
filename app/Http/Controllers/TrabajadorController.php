@@ -18,7 +18,7 @@ class TrabajadorController extends Controller
     {
         //
         $trabajadores = Trabajador::with('persona')
-        ->paginate(10);
+            ->paginate(10);
 
         return view('trabajador.index', compact('trabajadores'));
     }
@@ -43,33 +43,33 @@ class TrabajadorController extends Controller
     public function store(Request $request)
     {
         //campos a validar
-        $campos=[
-            'Nombre'=>'required|string|max:100',
-            'Apellidos'=>'required|string|max:100',
-            'Telefono'=>'required|integer|max:999999999',
-            'Correo'=>'required|email',
-            'Foto'=>'required|max:10000|mimes:jpeg,png,jpg'
+        $campos = [
+            'nombre' => 'required|string|max:100',
+            'apellidos' => 'required|string|max:100',
+            'telefono' => 'required|integer|max:999999999',
+            'correo' => 'required|email',
+            'foto' => 'required|max:10000|mimes:jpeg,png,jpg'
         ];
-        $mensaje=[
-            'required'=>'El :attribute es requerido',
-            'Foto.required'=>'La foto es requerida'
+        $mensaje = [
+            'required' => 'El :attribute es requerido',
+            'foto.required' => 'La foto es requerida'
         ];
-        
-        $this->validate($request,$campos,$mensaje);
-        $datosTrabajador = request()->except('_token', 'Cargo');
 
-        if($request->hasfile('Foto')){
-            $datosTrabajador['Foto']=$request->file('Foto')->store('uploads','public');
+        $this->validate($request, $campos, $mensaje);
+        $datosTrabajador = request()->except('_token', 'cargo');
+
+        if ($request->hasfile('foto')) {
+            $datosTrabajador['foto'] = $request->file('foto')->store('uploads', 'public');
         }
 
         $persona = Persona::firstOrCreate($datosTrabajador);
 
         Trabajador::firstOrCreate([
-            'cargo' => $request->cargo,
+            'cargo' => request('cargo'),
             'personas_id' => $persona->id
         ]);
 
-        return redirect('trabajador')->with('mensaje','Persona agregado con exito');
+        return redirect('trabajador')->with('mensaje', 'Persona agregado con exito');
     }
 
     /**
@@ -92,8 +92,8 @@ class TrabajadorController extends Controller
     public function edit($id)
     {
         //
-        $trabajador=Persona::findOrFail($id);
-        return view('trabajador.edit',compact('trabajador'));
+        $trabajador = Trabajador::findOrFail($id);
+        return view('trabajador.edit', compact('trabajador'));
     }
 
     /**
@@ -104,40 +104,38 @@ class TrabajadorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
+    {
         //validar datos
-        $campos=[
-            'Nombre'=>'required|string|max:100',
-            'Apellidos'=>'required|string|max:100',
-            'Telefono'=>'required|integer|max:999999999',
-            'Correo'=>'required|email',
+        $campos = [
+            'nombre' => 'required|string|max:100',
+            'apellidos' => 'required|string|max:100',
+            'telefono' => 'required|integer|max:999999999',
+            'correo' => 'required|email',
         ];
-        $mensaje=[
-            'required'=>'El :attribute es requerido',
-            
-        ];
-        
-        if($request->hasfile('Foto')){
-            $campos=['Foto'=>'required|max:10000|mimes:jpeg,png,jpg',];
-            $mensaje=['Foto.required'=>'La foto es requerida'];
+        $mensaje = [
+            'required' => 'El :attribute es requerido',
 
+        ];
+
+        if ($request->hasfile('foto')) {
+            $campos = ['foto' => 'required|max:10000|mimes:jpeg,png,jpg',];
+            $mensaje = ['foto.required' => 'La foto es requerida'];
         }
 
-        $this->validate($request,$campos,$mensaje);
+        $this->validate($request, $campos, $mensaje);
 
         //
-        $datosTrabajador = request()->except(['_token','_method']);
-        $trabajador=Persona::findOrFail($id);
-        Storage::delete('public/'.$trabajador->Foto);
-        if($request->hasfile('Foto')){
-
-            $datosTrabajador['Foto']=$request->file('Foto')->store('uploads','public');
+        $datosTrabajador = request()->except(['_token', '_method']);
+        $trabajador = Trabajador::findOrFail($id);
+        $persona = Persona::findOrFail($trabajador->personas_id);
+        if ($request->hasfile('foto')) {
+            Storage::delete('public/' . $persona->foto);
+            $datosTrabajador['foto'] = $request->file('foto')->store('uploads', 'public');
         }
-
-        Persona::where('id','=',$id)->update($datosTrabajador);
-        $trabajador=Persona::findOrFail($id);
+        $persona->update($datosTrabajador);
+        $trabajador->update(['cargo' => request('cargo')]);
         //return view('trabajador.edit',compact('trabajador') );
-        return redirect('trabajador')->with('mensaje','Persona modificado');
+        return redirect('trabajador')->with('mensaje', 'Persona modificado');
     }
 
     /**
@@ -149,12 +147,12 @@ class TrabajadorController extends Controller
     public function destroy($id)
     {
         //
-        $trabajador=Persona::findOrFail($id);
+        $trabajador = Persona::findOrFail($id);
 
-        if(Storage::delete('public/'.$trabajador->Foto)){
+        if (Storage::delete('public/' . $trabajador->foto)) {
             Persona::destroy($id);
         }
 
-        return redirect('trabajador')->with('mensaje','Persona borrado');
+        return redirect('trabajador')->with('mensaje', 'Persona borrado');
     }
 }

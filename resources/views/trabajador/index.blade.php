@@ -23,11 +23,11 @@
             <thead class="thead-light">
                 <tr>
                     <th>#</th>
-                    <th>Foto</th>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Telefono</th>
-                    <th>Correo</th>
+                    <th>foto</th>
+                    <th>nombre</th>
+                    <th>apellidos</th>
+                    <th>telefono</th>
+                    <th>correo</th>
                     <th>Cargo</th>
                     <th>Acciones</th>
                 </tr>
@@ -38,13 +38,13 @@
                     <tr>
                         <td>{{ $trabajador->persona->id }}</td>
                         <td>
-                            <img class="img-thumbnail img-fluid" src="{{ asset('storage') . '/' . $trabajador->persona->Foto }}"
+                            <img class="img-thumbnail img-fluid" src="{{ asset('storage') . '/' . $trabajador->persona->foto }}"
                                 width="200" height="150" alt="">
                         </td>
-                        <td>{{ $trabajador->persona->Nombre }}</td>
-                        <td>{{ $trabajador->persona->Apellidos }}</td>
-                        <td>{{ $trabajador->persona->Telefono }}</td>
-                        <td>{{ $trabajador->persona->Correo }}</td>
+                        <td>{{ $trabajador->persona->nombre }}</td>
+                        <td>{{ $trabajador->persona->apellidos }}</td>
+                        <td>{{ $trabajador->persona->telefono }}</td>
+                        <td>{{ $trabajador->persona->correo }}</td>
                         <td>{{ $trabajador->cargo }}</td>
                         <td>
                             <a href="{{ url('/trabajador/' . $trabajador->persona->id . '/edit') }}" class="btn btn-warning">

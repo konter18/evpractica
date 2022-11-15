@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('personas', function (Blueprint $table) {
             $table->id();
 
-            $table->string('Nombre');
-            $table->string('Apellidos');
-            $table->integer('Telefono');
-            $table->string('Correo');
-            $table->string('Foto');
+            $table->string('nombre');
+            $table->string('apellidos');
+            $table->integer('telefono');
+            $table->string('correo');
+            $table->string('foto');
 
             $table->timestamps();
         });

@@ -13,46 +13,46 @@
 
 @endif
 <div class="form-group">
-    <label for="Nombre"> Nombre</label>
-    <input type="text" class="form-control" name="Nombre"
-        value="{{ isset($trabajador->Nombre) ? $trabajador->Nombre : old('Nombre') }}" id="Nombre">
+    <label for="nombre"> nombre</label>
+    <input type="text" class="form-control" name="nombre"
+        value="{{ isset($trabajador->persona->nombre) ? $trabajador->persona->nombre : old('nombre') }}" id="nombre">
 </div>
 
 <div class="form-group">
-    <label for="Apellidos"> Apellidos</label>
-    <input type="text" class="form-control" name="Apellidos"
-        value="{{ isset($trabajador->Apellidos) ? $trabajador->Apellidos : old('Apellidos') }}" id="Apellidos">
-
-</div>
-
-<div class="form-group">
-    <label for="Telefono"> Telefono</label>
-    <input type="text" class="form-control" name="Telefono"
-        value="{{ isset($trabajador->Telefono) ? $trabajador->Telefono : old('Telefono') }}" id="Telefono">
+    <label for="apellidos"> apellidos</label>
+    <input type="text" class="form-control" name="apellidos"
+        value="{{ isset($trabajador->persona->apellidos) ? $trabajador->persona->apellidos : old('apellidos') }}" id="apellidos">
 
 </div>
 
 <div class="form-group">
-    <label for="Correo"> Correo</label>
-    <input type="text" class="form-control" name="Correo"
-        value="{{ isset($trabajador->Correo) ? $trabajador->Correo : old('Correo') }}" id="Correo">
+    <label for="telefono"> telefono</label>
+    <input type="text" class="form-control" name="telefono"
+        value="{{ isset($trabajador->persona->telefono) ? $trabajador->persona->telefono : old('telefono') }}" id="telefono">
+
+</div>
+
+<div class="form-group">
+    <label for="correo"> correo</label>
+    <input type="text" class="form-control" name="correo"
+        value="{{ isset($trabajador->persona->correo) ? $trabajador->persona->correo : old('correo') }}" id="correo">
 
 </div>
 
 
 <div class="form-group">
-    <label for="Correo"> Cargo</label>
-    <input type="text" class="form-control" name="Correo"
-        value="{{ isset($trabajador->persona->car) ? $trabajador->persona->Correo : old('Correo') }}" id="Correo">
+    <label for="cargo"> cargo</label>
+    <input type="text" class="form-control" name="cargo"
+        value="{{ isset($trabajador->cargo) ? $trabajador->cargo : old('cargo') }}" id="cargo">
 
 </div>
 
 <div class="form-group">
-    <label for="Foto"></label>
-    @if (isset($trabajador->Foto))
-        <img class="img-thumbnail img-fluid" src="{{ asset('storage') . '/' . $trabajador->Foto }}" alt="">
+    <label for="foto"></label>
+    @if (isset($trabajador->persona->foto))
+        <img class="img-thumbnail img-fluid" src="{{ asset('storage') . '/' . $trabajador->persona->foto }}" alt="">
     @endif
-    <input type="file" class="form-control" name="Foto" value="" id="Foto">
+    <input type="file" class="form-control" name="foto" value="" id="foto">
     <br>
 </div>
 
