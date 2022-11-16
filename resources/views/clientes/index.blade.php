@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+    <div class="container">
 
 
         @if (Session::has('mensaje'))
@@ -12,9 +12,13 @@
         @endif
 
 
-        <a href="{{ url('trabajador/create') }}" class="btn btn-success">Registrar nuevo empleado</a>
+        
+
+
+        <a href="{{ url('clientes/create') }}" class="btn btn-success">Registrar nuevo Cliente</a>
         <br>
         <br>
+
         <table class="table table-light">
 
             <thead class="thead-light">
@@ -25,31 +29,33 @@
                     <th>Apellidos</th>
                     <th>Telefono</th>
                     <th>Correo</th>
-                    <th>Cargo</th>
+                    <th>Rut</th>
+                    <th>Direccion</th>
                     <th>>>>>Acciones<<<<</th>
                 </tr>
             </thead>
 
             <tbody>
-                @foreach ($trabajadores as $trabajador)
+                @foreach ($clientes as $cliente)
                     <tr>
-                        <td>{{ $trabajador->id }}</td>
+                        <td>{{ $cliente->persona->id }}</td>
                         <td>
-                            <img style="height:150px;width:170px" class="img-thumbnail img-fluid" src="{{ asset('storage') . '/' . $trabajador->persona->foto }}"
+                            <img style="height:150px;width:350px" class="img-thumbnail img-fluid" src="{{ asset('storage') . '/' . $cliente->persona->foto }}"
                              alt="">
                         </td>
-                        <td>{{ $trabajador->persona->nombre }}</td>
-                        <td>{{ $trabajador->persona->apellidos }}</td>
-                        <td>{{ $trabajador->persona->telefono }}</td>
-                        <td>{{ $trabajador->persona->correo }}</td>
-                        <td>{{ $trabajador->cargo }}</td>
+                        <td>{{ $cliente->persona->nombre }}</td>
+                        <td>{{ $cliente->persona->apellidos }}</td>
+                        <td>{{ $cliente->persona->telefono }}</td>
+                        <td>{{ $cliente->persona->correo }}</td>
+                        <td>{{ $cliente->rut }}</td>
+                        <td>{{ $cliente->direccion}}</td>
                         <td>
-                            <a href="{{ url('/trabajador/' . $trabajador->id . '/edit') }}" class="btn btn-warning">
+                            <a href="{{ url('/clientes/' . $cliente->id . '/edit') }}" class="btn btn-warning">
                                 Editar
                             </a>
                             |
 
-                            <form action="{{ url('/trabajador/' . $trabajador->id) }}" class="d-inline"
+                            <form action="{{ url('/clientes/' . $cliente->id) }}" class="d-inline"
                                 method="post">
                                 @csrf
                                 {{ method_field('DELETE') }}
@@ -60,9 +66,9 @@
 
                         </td>
                     </tr>
-                @endforeach( $trabajador as $trajadores)
+                @endforeach( $clientes as $cliente)
             </tbody>
         </table>
-        {!! $trabajadores->links() !!}
-</div>
+        {!! $clientes->links() !!}
+    </div>
 @endsection

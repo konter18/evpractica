@@ -50,7 +50,7 @@
 <div class="form-group">
     <label for="foto"></label>
     @if (isset($trabajador->persona->foto))
-        <img class="img-thumbnail img-fluid" src="{{ asset('storage') . '/' . $trabajador->persona->foto }}" alt="">
+        <img class="img-thumbnail img-fluid" style="height:250px;width:300px" src="{{ asset('storage') . '/' . $trabajador->persona->foto }}" alt="">
     @endif
     <input type="file" class="form-control" name="foto" value="" id="foto">
     <br>

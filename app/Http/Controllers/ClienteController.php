@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cliente;
 use App\Models\Persona;
+use App\Models\Cliente;
 use App\Models\Trabajador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class TrabajadorController extends Controller
+class ClienteController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +18,10 @@ class TrabajadorController extends Controller
     public function index()
     {
         //
-        $trabajadores = Trabajador::with('persona')
-            ->paginate(10);
+        $clientes = Cliente::with('persona')
+        ->paginate(10);
 
-        return view('trabajador.index', compact('trabajadores'));
+    return view('clientes.index', compact('clientes'));
     }
 
     /**
@@ -32,7 +32,7 @@ class TrabajadorController extends Controller
     public function create()
     {
         //
-        return view('trabajador.create');
+        return view('clientes.create');
     }
 
     /**
@@ -43,14 +43,16 @@ class TrabajadorController extends Controller
      */
     public function store(Request $request)
     {
-        //campos a validar
+                //campos a validar
         $campos = [
             'nombre' => 'required|string|max:100',
             'apellidos' => 'required|string|max:100',
             'telefono' => 'required|integer|max:999999999',
             'correo' => 'required|email',
             'foto' => 'required|max:10000|mimes:jpeg,png,jpg',
-            'cargo' => 'required|string|max:100'
+            'rut' => 'required|string|max:100',
+            'direccion' => 'required|string|max:100'
+
         ];
         $mensaje = [
             'required' => 'El :attribute es requerido',
@@ -58,29 +60,31 @@ class TrabajadorController extends Controller
         ];
 
         $this->validate($request, $campos, $mensaje);
-        $datosTrabajador = request()->except('_token', 'cargo');
+        $datosCLientes = request()->except('_token', 'rut','direccion');
 
         if ($request->hasfile('foto')) {
-            $datosTrabajador['foto'] = $request->file('foto')->store('uploads', 'public');
+            $datosCLientes['foto'] = $request->file('foto')->store('uploads', 'public');
         }
 
-        $persona = Persona::firstOrCreate($datosTrabajador);
+        $persona = Persona::firstOrCreate($datosCLientes);
 
-        Trabajador::firstOrCreate([
-            'cargo' => request('cargo'),
+        Cliente::firstOrCreate([
+            'rut' => request('rut'),
+            'direccion' => request ('direccion'),
             'personas_id' => $persona->id
         ]);
 
-        return redirect('trabajador')->with('mensaje', 'Persona agregado con exito');
+        return redirect('clientes')->with('mensaje', 'Cliente agregado con exito');
+    
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Persona  $trabajador
+     * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function show(Persona $trabajador)
+    public function show(Cliente $cliente)
     {
         //
     }
@@ -88,32 +92,33 @@ class TrabajadorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Persona  $trabajador
+     * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
         //
-        $trabajador = Trabajador::findOrFail($id);
-        return view('trabajador.edit', compact('trabajador'));
+        $cliente = Cliente::findOrFail($id);
+        return view('clientes.edit', compact('cliente'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Persona  $trabajador
+     * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //validar datos
+        //
         $campos = [
             'nombre' => 'required|string|max:100',
             'apellidos' => 'required|string|max:100',
             'telefono' => 'required|integer|max:999999999',
             'correo' => 'required|email',
-            'cargo' => 'required|string|max:100'
+            'rut' => 'required|string|max:100',
+            'direccion' => 'required|string|max:100'
         ];
         $mensaje = [
             'required' => 'El :attribute es requerido',
@@ -128,37 +133,39 @@ class TrabajadorController extends Controller
         $this->validate($request, $campos, $mensaje);
 
         //
-        $datosTrabajador = request()->except(['_token', '_method']);
-        $trabajador = Trabajador::findOrFail($id);
-        $persona = Persona::findOrFail($trabajador->personas_id);
+        $datosCLientes = request()->except(['_token', '_method']);
+        $cliente = Cliente::findOrFail($id);
+        $persona = Persona::findOrFail($cliente->personas_id);
         if ($request->hasfile('foto')) {
             Storage::delete('public/' . $persona->foto);
-            $datosTrabajador['foto'] = $request->file('foto')->store('uploads', 'public');
+            $datosCLientes['foto'] = $request->file('foto')->store('uploads', 'public');
         }
-        $persona->update($datosTrabajador);
-        $trabajador->update(['cargo' => request('cargo')]);
+        $persona->update($datosCLientes);
+        $cliente->update(['rut' => request('rut')]);
+        $cliente->update(['direccion' => request('direccion')]);
+
         //return view('trabajador.edit',compact('trabajador') );
-        return redirect('trabajador')->with('mensaje', 'Trabajador modificado');
+        return redirect('clientes')->with('mensaje', 'Cliente modificado');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Persona  $trabajador
+     * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         //
-        $trabajador = Trabajador::findOrFail($id); // Busca el TRABAJADOR a eliminar (CARGO)
-        $persona = Persona::findOrFail($trabajador->personas_id); // busca la persona correspondiente al TRABAJADOR (NOMBRE APELLIDO FOTO)
-        $trabajador->delete(); // ELIMINAMOS EL TRABAJADOR
+        $cliente = Cliente::findOrFail($id); // Busca el TRABAJADOR a eliminar (CARGO)
+        $persona = Persona::findOrFail($cliente->personas_id); // busca la persona correspondiente al TRABAJADOR (NOMBRE APELLIDO FOTO)
+        $cliente->delete(); // ELIMINAMOS EL TRABAJADOR
 
         if(!Cliente::where('personas_id', $persona->id)->exists()){
             if (Storage::delete('public/' . $persona->foto)) {
                 $persona->delete();
             }
         }
-        return redirect('trabajador')->with('mensaje', 'Trabajador borrado');
+        return redirect('clientes')->with('mensaje', 'Trabajador borrado');
     }
 }

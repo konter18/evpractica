@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ClienteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TrabajadorController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,9 @@ Route::get('/trabajadores/create',[TrabajadorController::class,'create']);*/
 
 Route::resource('trabajador', TrabajadorController::class)->middleware('auth');
 
-Auth::routes(['register'=>false,'reset'=>false]);
+Route::resource('clientes', ClienteController::class)->middleware('auth');
+
+Auth::routes();
 
 Route::get('/home', [TrabajadorController::class, 'index'])->name('home');
 
