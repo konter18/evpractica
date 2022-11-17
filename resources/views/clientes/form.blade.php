@@ -13,27 +13,27 @@
 
 @endif
 <div class="form-group">
-    <label for="nombre"> nombre</label>
+    <label for="nombre"> Nombre</label>
     <input type="text" class="form-control" name="nombre"
         value="{{ isset($cliente->persona->nombre) ? $cliente->persona->nombre : old('nombre') }}" id="nombre">
 </div>
 
 <div class="form-group">
-    <label for="apellidos"> apellidos</label>
+    <label for="apellidos"> Apellidos</label>
     <input type="text" class="form-control" name="apellidos"
         value="{{ isset($cliente->persona->apellidos) ? $cliente->persona->apellidos : old('apellidos') }}" id="apellidos">
 
 </div>
 
 <div class="form-group">
-    <label for="telefono"> telefono</label>
+    <label for="telefono"> Telefono</label>
     <input type="text" class="form-control" name="telefono"
         value="{{ isset($cliente->persona->telefono) ? $cliente->persona->telefono : old('telefono') }}" id="telefono">
 
 </div>
 
 <div class="form-group">
-    <label for="correo"> correo</label>
+    <label for="correo"> Correo</label>
     <input type="text" class="form-control" name="correo"
         value="{{ isset($cliente->persona->correo) ? $cliente->persona->correo : old('correo') }}" id="correo">
 
@@ -41,14 +41,14 @@
 
 
 <div class="form-group">
-    <label for="rut"> rut</label>
+    <label for="rut"> Rut</label>
     <input type="text" class="form-control" name="rut"
         value="{{ isset($cliente->rut) ? $cliente->rut : old('rut') }}" id="rut">
 
 </div>
 
 <div class="form-group">
-    <label for="direccion">direccion</label>
+    <label for="direccion">Direccion</label>
     <input type="text" class="form-control" name="direccion"
         value="{{ isset($cliente->direccion) ? $cliente->direccion : old('direccion') }}" id="direccion">
 
