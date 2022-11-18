@@ -20,20 +20,18 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-/*Route::get('/trabajadores', function () {
-    return view('trabajadores.index');
-});
-
-Route::get('/trabajadores/create',[TrabajadorController::class,'create']);*/
-
 Route::resource('trabajador', TrabajadorController::class)->middleware('auth');
 
 Route::resource('clientes', ClienteController::class)->middleware('auth');
 
 Auth::routes();
 
-Route::get('/home', [TrabajadorController::class, 'index'])->name('home');
+Route::get('/inicio',function(){
+    return view('inicio');
+})->middleware('auth');
 
-Route::group(['middleware'=>'auth'], function (){
-    Route::get('/', [TrabajadorController::class, 'index'])->name('home');
-});
+Route::get('/', [TrabajadorController::class, 'index'])->name('inicio')->middleware('auth');
+
+
+
+
