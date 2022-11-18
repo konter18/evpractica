@@ -157,7 +157,7 @@ class ClienteController extends Controller
     public function destroy($id)
     {
         //
-        $cliente = Cliente::findOrFail($id); // Busca el TRABAJADOR a eliminar (CARGO)
+        $cliente = Cliente::findOrFail($id); // Busca el TRABAJADOR a eliminar 
         $persona = Persona::findOrFail($cliente->personas_id); // busca la persona correspondiente al TRABAJADOR (NOMBRE APELLIDO FOTO)
         $cliente->delete(); // ELIMINAMOS EL TRABAJADOR
 
